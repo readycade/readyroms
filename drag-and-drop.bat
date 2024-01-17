@@ -1,6 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: Author Michael Cabral 2024
+:: Title: readyroms
+:: GPL-3.0 license
+:: Description: Extracts/Copies Rom files to Recalbox
+
 set "extractPath=\\RECALBOX\share"
 set "tempExtractPath=%~dp0Temp"
 set "biosExtractPath=%APPDATA%\readycade\bios"
