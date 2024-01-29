@@ -33,7 +33,7 @@ import subprocess
 import shutil
 import sys
 import time
-#from tqdm import tqdm
+from tqdm import tqdm
 
 # Set global password
 global_password = "readysetgo"
@@ -217,7 +217,10 @@ else:
     print("Authentication successful. Proceeding with installation...")
 
     # Define the local directory to save the downloaded installer
-    localTempDir = os.path.expandvars(r"%APPDATA%\readycade\temp")
+    #localTempDir = os.path.expandvars(r"%APPDATA%\readycade\temp")
+
+    # Define the relative path to the localTempDir
+    localTempDir = os.path.join(os.environ["APPDATA"], "readycade", "temp")
 
     # Download the 7-Zip installer using curl and retain the original name
     os.makedirs(localTempDir, exist_ok=True)
@@ -350,14 +353,15 @@ show_eula()
 root.title("Readycade™")
 
 # Remove the TK icon
-root.iconbitmap(default="icon.ico")
+#root.iconbitmap(default="icon.ico")
 
 # Instructions
 Instructions = tk.Label(root, text="Select a ROM Pack on your computer to install to your Readycade", font="open-sans")
 Instructions.grid(columnspan=3, column=0, row=1)
 
 # Logo
-logo = Image.open('logo.png')
+logo_path = os.path.join(os.path.dirname(__file__), 'logo.png')
+logo = Image.open(logo_path)
 logo = ImageTk.PhotoImage(logo)
 logo_label = tk.Label(image=logo)
 logo_label.image = logo
