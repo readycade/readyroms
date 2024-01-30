@@ -13,7 +13,7 @@ eg: n64.zip / n64.7z or snes.zip / snes.7z ect
 The newer python based GUI app is more user friendly.
 -----------------------------------------------------------------------------------------------
 
-OLD BATCH SCRIPT
+## OLD BATCH SCRIPT
 
 Essentially what the script does is offer you a drag and drop solution to install Rom files to Recalbox.
 
