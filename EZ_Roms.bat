@@ -10,7 +10,6 @@ setlocal enabledelayedexpansion
 ::VARS::
 set "romsExtractPath=\\RECALBOX\share\roms"
 set "tempExtractPath=%APPDATA%\readycade\roms"  REM Specify the desired extraction directory
-set "authURL=https://forum.readycade.com/auth.php"
 ::--------------------------------------------------------------------
 
 
@@ -26,42 +25,6 @@ if %errorlevel% neq 0 (
     exit /b
 )
 echo.
-
-::--------------------------------------------------------------------
-
-::--------------------------------------------------------------------
-::PROMPT FOR USERNAME AND PASSWORD (no echo for password)::
-
-set /p "dbUsername=Enter your username: "
-set "dbPassword="
-powershell -Command "$dbPassword = Read-Host 'Enter your password' -AsSecureString; [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($dbPassword)) | Out-File -FilePath credentials.txt -Encoding ASCII"
-set /p dbPassword=<credentials.txt
-del credentials.txt
-
-::--------------------------------------------------------------------
-
-::--------------------------------------------------------------------
-::AUTHENTICATION::
-
-rem Perform authentication by sending a POST request to auth.php using the captured password
-curl -X POST -d "dbUsername=!dbUsername!&dbPassword=!dbPassword!" "!authURL!" > auth_result.txt
-
-rem Check the authentication result
-set /p authResult=<auth_result.txt
-
-if "%authResult%" neq "Authenticated" (
-    echo Authentication failed. Exiting script...
-    del auth_result.txt
-    pause
-    exit /b
-) else (
-    echo Authentication successful. Proceeding with installation...
-    del auth_result.txt
-)
-
-echo.
-echo.
-::--------------------------------------------------------------------
 
 ::--------------------------------------------------------------------
 ::10 SECOND COUNTDOWN MESSAGE::
