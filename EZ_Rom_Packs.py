@@ -352,6 +352,10 @@ show_eula()
 # set the window title
 root.title("Readycade™")
 
+# Set the window icon
+icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Replace 'icon.ico' with your actual icon file
+root.iconbitmap(icon_path)
+
 # Remove the TK icon
 #root.iconbitmap(default="icon.ico")
 
