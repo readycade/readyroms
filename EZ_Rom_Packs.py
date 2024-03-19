@@ -27,6 +27,7 @@ from tkinter import Tk, Label, StringVar, Button, Scrollbar, Text
 from tkinter.filedialog import askopenfile
 from tkinter import messagebox
 import os
+import requests
 from PIL import Image, ImageTk
 import platform
 import subprocess
@@ -281,7 +282,6 @@ def process_rom(file):
     if base_filename in valid_consoles:
         # Define paths
         appdata_path = os.path.join(os.environ['APPDATA'], 'readycade', 'rompacks')
-        #temp_path = r'F:\Readycade\TEMP\share\roms'
         temp_path = r'\\RECALBOX\share\roms'
         # Ensure the directories exist
         os.makedirs(appdata_path, exist_ok=True)
@@ -355,9 +355,6 @@ root.title("Readycade™")
 # Set the window icon
 icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Replace 'icon.ico' with your actual icon file
 root.iconbitmap(icon_path)
-
-# Remove the TK icon
-#root.iconbitmap(default="icon.ico")
 
 # Instructions
 Instructions = tk.Label(root, text="Select a ROM Pack on your computer to install to your Readycade", font="open-sans")
