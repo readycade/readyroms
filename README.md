@@ -4,7 +4,7 @@
 
 ## INSTALLATION
 
-Select a Rom Pack from your computer and let EZ_Rom_Packs.exe do the rest!
+Select a Rom Pack from your computer and let Readycade_EZ_Rom_Packs.exe do the rest!
 
 eg: n64.zip / n64.7z or snes.zip / snes.7z ect
 
