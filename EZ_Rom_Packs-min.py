@@ -37,22 +37,17 @@ import sys
 import time
 from tqdm import tqdm
 
-# global__encrypted_password (already encoded)
 encoded_password = "cmVhZHlzZXRnbw=="
 
-# Decoding the password
 decoded_password = base64.b64decode(encoded_password.encode()).decode()
 
-# Get the script's directory
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Define the relative path to the EULA.txt file
 eula_path = os.path.join(script_dir, "EULA.txt")
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -60,25 +55,20 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 def show_eula():
-    # Load EULA from EULA.txt
     with open(eula_path, "r") as file:
         eula_text = file.read()
 
-    # Create a new window for displaying the EULA
     eula_window = tk.Toplevel()
     eula_window.title("End User License Agreement")
 
-    # Add a Text widget for displaying the EULA text with a scroll bar
     text_box = Text(eula_window, wrap=tk.WORD, height=24, width=70, padx=15, pady=15)
     text_box.insert(tk.END, eula_text)
     text_box.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
-    # Add a scrollbar
     scrollbar = Scrollbar(eula_window, command=text_box.yview)
     scrollbar.grid(row=0, column=1, sticky="nsew")
     text_box['yscrollcommand'] = scrollbar.set
 
-    # Add "Agree" and "Disagree" buttons
     def agree():
         eula_window.destroy()
         root.deiconify()
@@ -86,16 +76,12 @@ def show_eula():
     agree_button = tk.Button(eula_window, text="Agree", command=agree)
     agree_button.grid(row=1, column=0, padx=5, pady=5)
 
-    # Adjust the size of the EULA window
     eula_window.geometry("640x480")
 
-    # Force the focus on the EULA window
     eula_window.focus_force()
 
-    # Handle window closure
     eula_window.protocol("WM_DELETE_WINDOW", agree)
 
-# Dictionary of valid console names
 valid_consoles = {
     "64dd": "Nintendo 64DD",
     "amiga600": "Amiga 600",
@@ -185,7 +171,6 @@ def check_windows():
         messagebox.showerror("Error", "This script is intended to run on Windows only. Exiting.")
         sys.exit(1)
 
-# CHECK NETWORK SHARE
 print("Checking if the network share is available...")
 
 try:
@@ -195,36 +180,28 @@ except subprocess.CalledProcessError:
     print("Error: Could not connect to the network share \\RECALBOX.")
     print("Please make sure you are connected to the network and try again.")
     
-    # Show a message box
     root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    root.withdraw()
     messagebox.showerror("Error", "Network Share not found. Please make sure you are connected to the network and try again.")
     sys.exit()
 
 print()
 
-# Define the installation directory for 7-Zip
 installDir = "C:\\Program Files\\7-Zip"
 
-# Define the 7-Zip version you want to download
 version = "2301"
 
-# Define the download URL for the specified version
 downloadURL = f"https://www.7-zip.org/a/7z{version}-x64.exe"
 
-# Check if 7-Zip is already installed by looking for 7z.exe in the installation directory
 seven_zip_installed = os.path.exists(os.path.join(installDir, "7z.exe"))
 
 if seven_zip_installed:
     print("7-Zip is already installed.")
 else:
-    # Echo a message to inform the user about the script's purpose
     print("Authentication successful. Proceeding with installation...")
 
-    # Define the relative path to the localTempDir
     localTempDir = os.path.join(os.environ["APPDATA"], "readycade", "temp")
 
-    # Download the 7-Zip installer using curl and retain the original name
     os.makedirs(localTempDir, exist_ok=True)
     downloadPath = os.path.join(localTempDir, "7z_installer.exe")
     with requests.get(downloadURL, stream=True) as response, open(downloadPath, 'wb') as outFile:
@@ -236,132 +213,97 @@ else:
                 pbar.update(len(data))
                 outFile.write(data)
 
-    # Run the 7-Zip installer and wait for it to complete
     subprocess.run(["start", "/wait", "", downloadPath], shell=True)
 
-    # Check if the installation was successful
     if not os.path.exists(os.path.join(installDir, "7z.exe")):
         print("Installation failed.")
         sys.exit()
 
-    # Additional code to run after the installation is complete
     print("7-Zip is now installed.")
 
-# Function to update the status label
 def update_status(message):
     status_var.set(message)
     root.update_idletasks()
 
-# Function to perform cleanup
 def cleanup():
-    # Update the GUI more frequently during the cleanup process
     def update_gui_cleanup():
         root.update_idletasks()
         root.after(100, update_gui_cleanup)
 
-    update_gui_cleanup()  # Start updating the GUI
+    update_gui_cleanup()
 
-    # Clean up downloaded and extracted files
     shutil.rmtree(os.path.join(os.environ['APPDATA'], 'readycade', 'rompacks'), ignore_errors=True)
 
-    # Update status label
     update_status("Deleting Temporary Files... Please Wait...")
     print("Deleting Temporary Files... Please Wait...")
 
-    # Sleep for 2 seconds
     time.sleep(2)
 
-    # Clear status label
     status_var.set("")
 
-# Function to extract and copy ROM files
 def process_rom(file):
-    # Get the base filename (without extension)
     base_filename = os.path.splitext(os.path.basename(file.name))[0]
 
-    # Check if the base filename matches a valid console name
     if base_filename in valid_consoles:
-        # Define paths
         appdata_path = os.path.join(os.environ['APPDATA'], 'readycade', 'rompacks')
         temp_path = r'\\RECALBOX\share\roms'
-        # Ensure the directories exist
         os.makedirs(appdata_path, exist_ok=True)
         os.makedirs(temp_path, exist_ok=True)
 
         print("Extracting Files...")
 
-        # Update status label
         update_status("Extracting Files...")
 
-        # Proceed with the extraction directly to the target directory with the decoded password
         extraction_command = [r'C:\Program Files\7-Zip\7z.exe', 'x', '-aoa', '-p{}'.format(decoded_password), os.path.join(temp_path, file.name), '-o{}'.format(appdata_path)]
 
-        # Execute the extraction command
         subprocess.run(extraction_command)
 
-        # Clear status label
         status_var.set("")
 
-        # Update status label
         update_status(f"Copying {valid_consoles[base_filename]} to your Readycade...")
 
         print(f"Copying {valid_consoles[base_filename]} to your Readycade...")
 
-        # Copy the extracted contents to the destination directory
         destination_path = os.path.join(temp_path, base_filename)
         shutil.copytree(appdata_path, destination_path, dirs_exist_ok=True)
 
-        # Update status label
         update_status("Success. Please Update your Gameslist Now.")
 
-        # Show messagebox
         messagebox.showinfo("Success", f"Extraction and Copying completed for {valid_consoles[base_filename]}. Remember to Update your Gamelists.")
 
-        # Cleanup function
         cleanup()
     else:
-        # Display an error message for an invalid console name
         messagebox.showerror("Error", "Invalid console name. Please use a valid console name eg: n64, amiga600 etc.")
 
-# Function to handle opening a ROM file
 def open_rom_file():
     browse_text.set("loading...")
 
-    # Update the GUI more frequently during the process
     def update_gui():
         root.update_idletasks()
         root.after(100, update_gui)
 
-    update_gui()  # Start updating the GUI
+    update_gui()
 
     file = askopenfile(parent=root, mode='rb', title="Choose a ROM Pack (.zip or .7z only)", filetype=[("ZIP files", "*.zip;*.7z")])
     if file:
         process_rom(file)
 
-    # Set button text back to "Browse" regardless of whether a file was selected or not
     browse_text.set("Browse")
 
-# Set up the main window
 root = tk.Tk()
 
-# Hide the main window initially
 root.withdraw()
 
-# Show EULA before creating the main window
 show_eula()
 
-# set the window title
 root.title("Readycade™")
 
-# Set the window icon
-icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')  # Replace 'icon.ico' with your actual icon file
+icon_path = os.path.join(os.path.dirname(__file__), 'icon.ico')
 root.iconbitmap(icon_path)
 
-# Instructions
 Instructions = tk.Label(root, text="Select a ROM Pack on your computer to install to your Readycade", font="open-sans")
 Instructions.grid(columnspan=3, column=0, row=1)
 
-# Logo
 logo_path = os.path.join(os.path.dirname(__file__), 'logo.png')
 logo = Image.open(logo_path)
 logo = ImageTk.PhotoImage(logo)
@@ -369,12 +311,10 @@ logo_label = tk.Label(image=logo)
 logo_label.image = logo
 logo_label.grid(column=1, row=0)
 
-# Status label
 status_var = tk.StringVar()
 status_label = tk.Label(root, textvariable=status_var, font="open-sans")
 status_label.grid(columnspan=3, column=0, row=4)
 
-# Browse Button
 browse_text = tk.StringVar()
 browse_btn = tk.Button(root, textvariable=browse_text, command=open_rom_file, font="open-sans", bg="#ff6600", fg="white", height=2, width=15)
 browse_text.set("Browse")
