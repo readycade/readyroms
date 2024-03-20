@@ -379,4 +379,6 @@ browse_btn = tk.Button(root, textvariable=browse_text, command=open_rom_file, fo
 browse_text.set("Browse")
 browse_btn.grid(column=1, row=2)
 
+cleanup()
+
 root.mainloop()
