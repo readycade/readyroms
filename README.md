@@ -28,3 +28,7 @@ It puts everything in ALL THE RIGHT PLACES!
 eg: /recalbox/share/roms/$console_name
 ```
 ### Remember to have your Ethernet Cable connected
+
+### Screenshot of Readycade EZ Rom Packs Installer
+![Readycade EZ Rom Packs Installer](https://github.com/readycade/readyroms/blob/master/readycade_rompacks.PNG)
+
