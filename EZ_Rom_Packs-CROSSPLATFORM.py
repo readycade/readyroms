@@ -17,7 +17,20 @@
 * Author Michael Cabral 2024
 * Title: EZ_Rom_Packs
 * GPL-3.0 License
+* Platforms: Windows 10/11, Linux, MacOS
 * Description: Downloads and Installs Rom Packs to your Readycade eg: n64.zip, snes.7z ect
+
+## DISCLAIMER: This script is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement.
+
+## This script is intended for educational and informational purposes only. The authors and ReadyCade, Inc. do not support or condone the illegal downloading or distribution of video games. Downloading video games
+## without proper authorization is illegal and can result in severe penalties. Users are solely responsible for ensuring that their actions comply with applicable laws.
+
+## This script does not actually download or store any video games. It is solely for mounting an online source, and no content will remain on your ReadyCade upon reboot.
+
+## In no event shall the authors or ReadyCade, Inc. be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the script
+## or the use or other dealings in the script. USE AT YOUR OWN RISK. YOU ASSUME ALL LIABILITY FOR ANY ACTIONS TAKEN BASED ON THIS SCRIPT.
+#################################################################################################################
+
 """
 
 import base64
