@@ -43,6 +43,9 @@ from playsound import playsound  # Cross-platform sound playback
 # Get the user's home directory
 home_directory = os.path.expanduser("~")
 
+# Define the target directory for cleanup
+target_directory = os.path.join(home_directory, "readycade", "rompacks")
+
 # Determine the installation directory for 7-Zip
 if platform.system() == 'Windows':
     # On Windows, use a common location for program installations
@@ -254,7 +257,7 @@ def cleanup():
     update_gui_cleanup()  # Start updating the GUI
 
     # Clean up downloaded and extracted files
-    shutil.rmtree(os.path.join(os.environ['APPDATA'], 'readycade', 'rompacks'), ignore_errors=True)
+    shutil.rmtree(target_directory, ignore_errors=True)
 
     # Update status label
     update_status("Deleting Temporary Files... Please Wait...")
