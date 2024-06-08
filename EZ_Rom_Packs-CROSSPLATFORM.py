@@ -153,13 +153,6 @@ def check_network_share():
 
 check_network_share()
 
-import os
-import platform
-import subprocess
-import requests
-from tqdm import tqdm
-import tarfile
-
 # Define the 7-Zip version and download URLs
 version = "2406"
 download_urls = {
