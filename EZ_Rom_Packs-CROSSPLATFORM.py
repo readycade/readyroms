@@ -153,6 +153,13 @@ def check_network_share():
 
 #check_network_share()
 
+import os
+import platform
+import subprocess
+import requests
+from tqdm import tqdm
+import tarfile
+
 # Define the 7-Zip version and download URLs
 version = "2406"
 download_urls = {
@@ -172,39 +179,33 @@ if current_platform == 'Linux':
         downloadURL = download_urls["Linux_arm64"]
     else:
         print(f"Unsupported Linux architecture: {arch}")
-        sys.exit()
+        exit_code = 1
 elif current_platform == 'Darwin':
     downloadURL = download_urls["macOS"]
 elif current_platform == 'Windows':
     downloadURL = download_urls["Windows"]
 else:
     print(f"Unsupported platform: {current_platform}")
-    sys.exit()
+    exit_code = 1
 
 # Define the installation directory for 7-Zip
 if current_platform == 'Windows':
     installDir = "C:\\Program Files\\7-Zip"
-else:
+    executable_name = "7z.exe"
+elif current_platform in ['Linux', 'Darwin']:
     installDir = "/usr/bin"
-
-# Check if 7-Zip is already installed by looking for the 7z executable in the installation directory
-seven_zip_installed = os.path.exists(os.path.join(installDir, "7z.exe")) if current_platform == 'Windows' else os.path.exists(os.path.join(installDir, "7zz"))
-
-if seven_zip_installed:
-    print("7-Zip is already installed. Continuing with the rest of the script.")
+    executable_name = "7zz"
 else:
-    print("7-Zip not installed. Proceeding with installation...")
+    print(f"Unsupported platform: {current_platform}")
+    exit_code = 1
 
-    # Define the relative path to the localTempDir
-    if current_platform == 'Windows':
-        home_directory = os.path.expanduser("~")
-        localTempDir = os.path.join(home_directory, "readycade", "7zip")
-    else:
-        home_directory = os.path.expanduser("~")
-        localTempDir = os.path.join(home_directory, "readycade", "7zip")
-
-    os.makedirs(localTempDir, exist_ok=True)
-    downloadPath = os.path.join(localTempDir, os.path.basename(downloadURL))
+# Check if 7-Zip is already installed
+if not os.path.exists(os.path.join(installDir, executable_name)):
+    # Define the temporary directory for downloading the installer
+    home_directory = os.path.expanduser("~")
+    tempDir = os.path.join(home_directory, "readycade", "7zip_temp")
+    os.makedirs(tempDir, exist_ok=True)
+    downloadPath = os.path.join(tempDir, os.path.basename(downloadURL))
 
     # Download the installer
     with requests.get(downloadURL, stream=True) as response, open(downloadPath, 'wb') as outFile:
@@ -216,39 +217,34 @@ else:
                 pbar.update(len(data))
                 outFile.write(data)
 
-    # Install 7-Zip
+    # Run the installer based on the platform
     if current_platform == 'Windows':
-        log_file = os.path.join(localTempDir, "7zip_install_log.txt")
         try:
-            subprocess.run(
-                ["msiexec", "/i", downloadPath, "/quiet", "/log", log_file],
-                check=True
-            )
+            subprocess.run(["msiexec", "/i", downloadPath], check=True)
         except subprocess.CalledProcessError as e:
-            print(f"Installation failed with error: {e.returncode}")
-            print(f"Check the log file at {log_file} for more details.")
-            sys.exit(e.returncode)
-    else:
+            print(f"Installation failed with error: {e}")
+            exit_code = 1
+    elif current_platform == 'Linux' or current_platform == 'Darwin':
         try:
-            with tarfile.open(downloadPath) as tar:
-                tar.extractall(path=installDir)
+            with tarfile.open(downloadPath, 'r:xz') as tar:
+                tar.extractall(path=tempDir)
         except Exception as e:
             print(f"Installation failed with error: {e}")
-            sys.exit(1)
+            exit_code = 1
 
-        # Make the 7z executable
-        try:
-            subprocess.run(["chmod", "+x", os.path.join(installDir, "7zz")], check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to make 7z executable: {e}")
-            sys.exit(e.returncode)
+        # Move binaries to install directory and make them executable
+        extracted_folder = os.path.join(tempDir, f"7z{version}")
+        binaries = [os.path.join(extracted_folder, f) for f in os.listdir(extracted_folder) if os.path.isfile(os.path.join(extracted_folder, f))]
+        for binary in binaries:
+            try:
+                os.rename(binary, os.path.join(installDir, executable_name))
+                os.chmod(os.path.join(installDir, executable_name), 0o755)  # Make executable
+            except Exception as e:
+                print(f"Error moving binary {binary} to {installDir}: {e}")
 
-    # Check if the installation was successful
-    if not os.path.exists(os.path.join(installDir, "7z.exe")) if current_platform == 'Windows' else not os.path.exists(os.path.join(installDir, "7zz")):
-        print("Installation failed.")
-        sys.exit()
-
-    print("7-Zip is now installed.")
+        print("7-Zip is now installed.")
+else:
+    print("7-Zip is already installed.")
 
 # Function to update the status label
 def update_status(message):
