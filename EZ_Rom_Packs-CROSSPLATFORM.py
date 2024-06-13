@@ -177,7 +177,7 @@ def check_network_share():
         messagebox.showerror("Error", "Network Share not found. Please make sure you are connected to the network and try again.")
         sys.exit()
 
-#check_network_share()
+check_network_share()
 
 def run_with_sudo(command):
     """
