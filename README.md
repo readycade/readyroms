@@ -14,8 +14,6 @@ Select a **Rom Pack** from your **computer** and let readyroms.exe do the rest!
 
 eg: n64.zip / n64.7z or snes.zip / snes.7z ect
 
-The newer python based GUI app is more user friendly.
-
 It puts everything in ALL THE RIGHT PLACES!
 ```
 eg: /recalbox/share/roms/$console_name
@@ -23,5 +21,5 @@ eg: /recalbox/share/roms/$console_name
 
 ### Remember to have your Ethernet Cable connected
 
-### Screenshot of Readycade EZ Rom Packs Installer
+### Screenshot of ReadyRoms
 ![Readycade EZ Rom Packs Installer](https://github.com/readycade/readyroms/blob/master/readycade_rompacks.PNG)
