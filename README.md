@@ -1,6 +1,6 @@
 
 
-## Readycade EZ Roms Packs
+## ReadyRoms
 Browse your computer for compatible Rom Packs and we'll do the rest!
 
 ## Click the Picture below to Watch the ReadySync (Online Mode) YouTube Video
@@ -10,7 +10,7 @@ Browse your computer for compatible Rom Packs and we'll do the rest!
 
 ### Windows 10/11, Linux and MacOS Supported
 
-Select a **Rom Pack** from your **computer** and let Readycade_EZ_Rom_Packs.exe do the rest!
+Select a **Rom Pack** from your **computer** and let readyroms.exe do the rest!
 
 eg: n64.zip / n64.7z or snes.zip / snes.7z ect
 
