@@ -25,16 +25,3 @@ eg: /recalbox/share/roms/$console_name
 
 ### Screenshot of Readycade EZ Rom Packs Installer
 ![Readycade EZ Rom Packs Installer](https://github.com/readycade/readyroms/blob/master/readycade_rompacks.PNG)
-
------------------------------------------------------------------------------------------------
-
-## OLD BATCH SCRIPT (USE AT YOUR OWN RISK!)
-
-Essentially what the script does is offer you a **drag and drop** solution to install **Roms** to **Recalbox**.
-
-## INSTALLATION
-
-### Windows 10/11 Supported ONLY:
-Just Download the **EZ_Roms.zip**, Extract it.. Drag and Drop your **Rompack.7z**/**Rompack.zip** ontop of **drag-and-drop.exe** and let go.
-
-### Remember to have your Ethernet Cable connected
