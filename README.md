@@ -8,7 +8,7 @@ Browse your computer for compatible Rom Packs and we'll do the rest!
 
 ## INSTALLATION
 
-### Windows 10/11, Linux and MacOS Supported
+### Windows 10/11, Linux Supported ONLY! (Mac had some issues, just use drag and drop or filezilla FTP file transfer, which is recommended anyways)
 
 Select a **Rom Pack** from your **computer** and let readyroms.exe do the rest!
 
