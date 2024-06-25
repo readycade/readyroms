@@ -525,7 +525,6 @@ def process_rom(file):
         # Cleanup on error
         cleanup()
 
-# Function to handle opening a ROM file
 def open_rom_file():
     browse_text.set("loading...")
 
@@ -536,12 +535,21 @@ def open_rom_file():
 
     update_gui()  # Start updating the GUI
 
+    # Prompt the user to select a file using askopenfile
     file = askopenfile(parent=root, mode='rb', title="Choose a ROM Pack (.zip or .7z only)", filetype=[("ZIP files", "*.zip;*.7z")])
     if file:
-        process_rom(file)
+        # Check if the file name contains "recalbox"
+        if "recalbox" in os.path.basename(file.name).lower():
+            process_rom(file)
+        else:
+            print("Selected file does not contain 'recalbox' in the name.")
+            messagebox.showerror("Error", "Selected file does not contain 'recalbox' in the name.")
 
     # Set button text back to "Browse" regardless of whether a file was selected or not
     browse_text.set("Browse")
+
+    # Ensure cleanup is called even if the user cancels the file selection
+    cleanup()
 
 # Set up the main window
 root = tk.Tk()
