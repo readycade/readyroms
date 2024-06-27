@@ -536,7 +536,7 @@ def open_rom_file():
 
     update_gui()  # Start updating the GUI
 
-    file = askopenfile(parent=root, mode='rb', title="Choose a ROM Pack (.zip or .7z only)", filetype=[("ZIP files", "*.zip;*.7z")])
+    file = askopenfile(parent=root, mode='rb', title="Choose a ROM Pack (.zip or .7z only)", filetypes=[("ZIP files", "*.zip;*.7z")])
     if file:
         process_rom(file)
 
