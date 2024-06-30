@@ -4,7 +4,7 @@
 Browse your computer for compatible Rom Packs and we'll do the rest!
 
 ## Click the Picture below to Watch the ReadyRomPacks Tutorial
-[![EZ Rom Packs](EZ_Rom_Packs.jpg)](https://www.youtube.com/watch?v=R84ZMl-KkDI)
+[![EZ Rom Packs](EZ_Rom_Packs.jpg)](https://readycade.com/2023/11/02/readycade-rom-pack-installer-1-0-tutorial/)
 
 ## INSTALLATION
 
